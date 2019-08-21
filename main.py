@@ -37,7 +37,7 @@ def start(update, context):
 
 def help(update, context):
     """Send a message when the command /help is issued."""
-    update.message.reply_text('Available commands:\n\n/ratecourse')
+    update.message.reply_text('Available commands:\n\n/id')
 
 
 def id(update, context):
@@ -106,7 +106,7 @@ def button(update, context):
 
     if query.from_user.id == person_who_pushed_the_button:
         if 'milk' in query.data or 'beer' in query.data or 'tea' in query.data:
-            query.edit_message_text(text="Cheers! And welcome.")
+            query.edit_message_text(text="Cheers!")
             context.bot.restrict_chat_member(
                 int(os.environ['CHAT_ID']),
                 person_who_pushed_the_button,
