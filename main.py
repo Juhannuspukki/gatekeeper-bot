@@ -19,6 +19,7 @@ import os
 import logging
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Filters, Updater, MessageHandler, CommandHandler, CallbackQueryHandler
+from random import shuffle
 
 # Enable logging
 logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
@@ -57,36 +58,46 @@ def hodor(update, context):
                 can_add_web_page_previews=False
             )
 
-            keyboard = [
-                [
-                    InlineKeyboardButton("🥩", callback_data=callback_id + ',steak'),
-                    InlineKeyboardButton("🥝", callback_data=callback_id + ',kiwi'),
-                    InlineKeyboardButton("🥛", callback_data=callback_id + ',milk'),
-                ],
-                [
-                    InlineKeyboardButton("🥓", callback_data=callback_id + ',bacon'),
-                    InlineKeyboardButton("🥥", callback_data=callback_id + ',coconut'),
-                    InlineKeyboardButton("🍩", callback_data=callback_id + ',donut')
-                ],
-                [
-                    InlineKeyboardButton("🌮", callback_data=callback_id + ',taco'),
-                    InlineKeyboardButton("🍺", callback_data=callback_id + ',beer'),
-                    InlineKeyboardButton("🥗", callback_data=callback_id + ',salad')
-                ],
+            keyboard_items = [
+                InlineKeyboardButton("🥩", callback_data=callback_id + ',steak'),
+                InlineKeyboardButton("🥝", callback_data=callback_id + ',kiwi'),
+                InlineKeyboardButton("🥛", callback_data=callback_id + ',milk'),
+                InlineKeyboardButton("🥓", callback_data=callback_id + ',bacon'),
+                InlineKeyboardButton("🥥", callback_data=callback_id + ',coconut'),
+                InlineKeyboardButton("🍩", callback_data=callback_id + ',donut'),
+                InlineKeyboardButton("🌮", callback_data=callback_id + ',taco'),
+                InlineKeyboardButton("🍺", callback_data=callback_id + ',beer'),
+                InlineKeyboardButton("🥗", callback_data=callback_id + ',salad'),
+                InlineKeyboardButton("🍌", callback_data=callback_id + ',banana'),
+                InlineKeyboardButton("🌰", callback_data=callback_id + ',chestnut'),
+                InlineKeyboardButton("🍵", callback_data=callback_id + ',tea'),
+                InlineKeyboardButton("🥑", callback_data=callback_id + ',avocado'),
+                InlineKeyboardButton("🍗", callback_data=callback_id + ',chicken'),
+                InlineKeyboardButton("🥪", callback_data=callback_id + ',sandwich'),
+                InlineKeyboardButton("🥒", callback_data=callback_id + ',cucumber')
             ]
+
+            shuffle(keyboard_items)
+            keyboard = []
+
+            counter = 0
+            for i in range(4):  # create a list with nested lists
+                keyboard.append([])
+                for n in range(4):
+                    keyboard_item = keyboard_items[counter]
+                    keyboard[i].append(keyboard_item)  # fills nested lists with data
+                    counter += 1
 
             reply_markup = InlineKeyboardMarkup(keyboard)
 
             update.message.reply_text(
-                'Hello, user ' +
-                callback_id +
-                ', also known as ' +
+                'Hello, ' +
                 new_member.first_name +
-                '. Please grab something to drink to prove that you are definitely not a robot.',
+                ' and welcome to the group. Just a small formality before we start. Please prove that you are not a robot by grabbing a drink of your choice below.',
                 reply_markup=reply_markup
             )
     except AttributeError:
-        pass;
+        pass
 
 
 def button(update, context):
@@ -94,7 +105,7 @@ def button(update, context):
     person_who_pushed_the_button = int(query.data.split(",")[0])
 
     if query.from_user.id == person_who_pushed_the_button:
-        if 'milk' in query.data or 'beer' in query.data:
+        if 'milk' in query.data or 'beer' in query.data or 'tea' in query.data:
             query.edit_message_text(text="Cheers! And welcome.")
             context.bot.restrict_chat_member(
                 int(os.environ['CHAT_ID']),
