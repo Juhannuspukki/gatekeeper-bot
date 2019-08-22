@@ -66,11 +66,11 @@ def hodor(update, context):
                 InlineKeyboardButton("🥥", callback_data=callback_id + ',coconut'),
                 InlineKeyboardButton("🍩", callback_data=callback_id + ',donut'),
                 InlineKeyboardButton("🌮", callback_data=callback_id + ',taco'),
-                InlineKeyboardButton("🍺", callback_data=callback_id + ',beer'),
+                InlineKeyboardButton("🍕", callback_data=callback_id + ',pizza'),
                 InlineKeyboardButton("🥗", callback_data=callback_id + ',salad'),
                 InlineKeyboardButton("🍌", callback_data=callback_id + ',banana'),
                 InlineKeyboardButton("🌰", callback_data=callback_id + ',chestnut'),
-                InlineKeyboardButton("🍵", callback_data=callback_id + ',tea'),
+                InlineKeyboardButton("🍭", callback_data=callback_id + ',lollipop'),
                 InlineKeyboardButton("🥑", callback_data=callback_id + ',avocado'),
                 InlineKeyboardButton("🍗", callback_data=callback_id + ',chicken'),
                 InlineKeyboardButton("🥪", callback_data=callback_id + ',sandwich'),
@@ -105,7 +105,7 @@ def button(update, context):
     person_who_pushed_the_button = int(query.data.split(",")[0])
 
     if query.from_user.id == person_who_pushed_the_button:
-        if 'milk' in query.data or 'beer' in query.data or 'tea' in query.data:
+        if 'milk' in query.data:
             query.edit_message_text(text="Cheers!")
             context.bot.restrict_chat_member(
                 int(os.environ['CHAT_ID']),
