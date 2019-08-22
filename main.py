@@ -93,7 +93,7 @@ def hodor(update, context):
             update.message.reply_text(
                 'Hello, ' +
                 new_member.first_name +
-                ' and welcome to the group. Just a small formality before we start. Please prove that you are not a robot by grabbing a drink of your choice below.',
+                ' and welcome to the group. Just a small formality before we allow you to post: please prove that you are not a robot by grabbing a drink below.',
                 reply_markup=reply_markup
             )
     except AttributeError:
@@ -106,7 +106,10 @@ def button(update, context):
 
     if query.from_user.id == person_who_pushed_the_button:
         if 'milk' in query.data:
-            query.edit_message_text(text="Cheers!")
+            context.bot.delete_message(
+                chat_id=update.callback_query.message.chat_id,
+                message_id=update.callback_query.message.message_id
+            )
             context.bot.restrict_chat_member(
                 int(os.environ['CHAT_ID']),
                 person_who_pushed_the_button,
@@ -116,7 +119,7 @@ def button(update, context):
                 can_add_web_page_previews=True
             )
         else:
-            query.edit_message_text(text="So you are a robot after all? Shoo!")
+            query.edit_message_text(text="🚨 A robot suspect was just put on hold! 🚨")
 
 
 def error(update, context):
