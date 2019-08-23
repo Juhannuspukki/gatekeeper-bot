@@ -88,6 +88,8 @@ def hodor(update, context):
                     keyboard[i].append(keyboard_item)  # fills nested lists with data
                     counter += 1
 
+            print(keyboard)
+
             reply_markup = InlineKeyboardMarkup(keyboard)
 
             update.message.reply_text(
@@ -103,6 +105,8 @@ def hodor(update, context):
 def button(update, context):
     query = update.callback_query
     person_who_pushed_the_button = int(query.data.split(",")[0])
+    print("Query user: " + query.from_user)
+    print("Query data: " + query.data)
 
     if query.from_user.id == person_who_pushed_the_button:
         if 'milk' in query.data:
