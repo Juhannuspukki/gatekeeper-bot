@@ -17,7 +17,7 @@ bot.
 """
 import os
 import logging
-from telegram import InlineKeyboardButton, InlineKeyboardMarkup
+from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ChatPermissions
 from telegram.ext import Filters, Updater, MessageHandler, CommandHandler, CallbackQueryHandler
 from random import shuffle
 
@@ -52,10 +52,7 @@ def hodor(update, context):
             context.bot.restrict_chat_member(
                 int(os.environ['CHAT_ID']),
                 new_member.id,
-                can_send_messages=False,
-                can_send_media_messages=False,
-                can_send_other_messages=False,
-                can_add_web_page_previews=False
+                switch_permission(False)
             )
 
             keyboard_items = [
@@ -100,6 +97,19 @@ def hodor(update, context):
         pass
 
 
+def switch_permission(flag: bool):
+    """
+    switch user permission
+    :param flag:  True open permission，False close permission
+    :return: ChatPermissions
+    """
+    return ChatPermissions(
+        can_send_message=flag,
+        can_send_media_message=flag,
+        can_send_other_message=flag,
+        can_add_web_page_previews=flag)
+
+
 def button(update, context):
     query = update.callback_query
     person_who_pushed_the_button = int(query.data.split(",")[0])
@@ -115,10 +125,7 @@ def button(update, context):
             context.bot.restrict_chat_member(
                 int(os.environ['CHAT_ID']),
                 person_who_pushed_the_button,
-                can_send_messages=True,
-                can_send_media_messages=True,
-                can_send_other_messages=True,
-                can_add_web_page_previews=True
+                switch_permission(True)
             )
         else:
             query.edit_message_text(text="🚨 A robot suspect was just put on hold! 🚨")
